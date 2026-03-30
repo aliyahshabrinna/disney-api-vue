@@ -2,6 +2,12 @@
   <div>
     <h1>Disney Characters</h1>
 
+    <!-- SEARCH -->
+    <input v-model="search" placeholder="Cari karakter..." />
+    <button @click="searchCharacter">Search</button>
+    <button @click="getAll">Reset</button>
+
+    <!-- LIST DATA -->
     <div v-for="char in characters" :key="char._id">
       <h3>{{ char.name }}</h3>
       <img :src="char.imageUrl" width="100" />
@@ -17,17 +23,35 @@
 export default {
   data() {
     return {
-      characters: []
+      characters: [],
+      search: ''
     }
   },
+
   mounted() {
-    fetch('https://api.disneyapi.dev/character')
-      .then(res => res.json())
-      .then(data => {
-        this.characters = data.data
-      })
+    this.getAll()
   },
+
   methods: {
+    // ambil semua data
+    getAll() {
+      fetch('https://api.disneyapi.dev/character')
+        .then(res => res.json())
+        .then(data => {
+          this.characters = data.data
+        })
+    },
+
+    // search data
+    searchCharacter() {
+      fetch(`https://api.disneyapi.dev/character?name=${this.search}`)
+        .then(res => res.json())
+        .then(data => {
+          this.characters = data.data
+        })
+    },
+
+    // ke halaman detail
     goDetail(id) {
       this.$router.push(`/detail/${id}`)
     }
