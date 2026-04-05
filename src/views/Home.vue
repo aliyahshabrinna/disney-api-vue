@@ -1,57 +1,46 @@
-<template>
-  <div class="container mt-4">
-    <h1 class="text-center mb-4">Disney Characters</h1>
+﻿<template>
+  <div class="container mt-5">
+    <div class="page-header text-center mb-4">
+      <h1>Disney Character Vault</h1>
+      <p>Explore your favorite Disney characters with magical style.</p>
+    </div>
 
-    <!-- LOADING -->
-    <div v-if="loading" class="text-center">
+    <div v-if="loading" class="text-center mb-5">
       <div class="spinner-border text-light"></div>
     </div>
 
-    <!-- CONTENT -->
     <div v-else>
-
-      <!-- SEARCH (CENTER) -->
       <div class="row justify-content-center mb-4">
-       <div class="col-md-6">
-        <div class="input-group">
-          <input v-model="search" class="form-control" placeholder="Cari karakter..." />
-      <button @click="searchCharacter" class="btn btn-primary">Search</button>
-    </div>
-  </div>
-</div>
-
-      <!-- DATA -->
-      <div class="row justify-content-center">
-        <div class="col-3 mb-4 d-flex" v-for="char in characters" :key="char._id">
-          <div class="card character-card shadow h-100 text-center">
-
-            <img 
-              :src="char.imageUrl || 'https://via.placeholder.com/150'" 
-              class="card-img-top"
-              style="height:200px; object-fit:cover;"
-            />
-
-            <div class="card-body">
-              <h5>{{ char.name }}</h5>
-
-              <button 
-                @click="goDetail(char._id)" 
-                class="btn btn-primary btn-sm mt-2"
-              >
-                Detail
-              </button>
-            </div>
-
+        <div class="col-md-6">
+          <div class="input-group search-box shadow-sm">
+            <input v-model="search" class="form-control" placeholder="Search characters..." />
+            <button @click="searchCharacter" class="btn btn-disney">Search</button>
           </div>
         </div>
       </div>
 
-      <!-- PAGINATION -->
-      <div class="text-center">
+      <div class="row justify-content-center">
+        <div class="col-sm-6 col-md-4 col-lg-3 mb-4 d-flex" v-for="char in characters" :key="char._id">
+          <div class="card character-card shadow h-100 text-center">
+            <img
+              :src="char.imageUrl || 'https://via.placeholder.com/150'"
+              class="card-img-top"
+              style="height:220px; object-fit:cover;"
+            />
+            <div class="card-body d-flex flex-column align-items-center justify-content-between">
+              <h5 class="mb-3">{{ char.name }}</h5>
+              <button @click="goDetail(char._id)" class="btn btn-detail btn-sm mt-2">
+                Detail
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center mt-3">
         <button @click="prevPage" class="btn btn-secondary m-2">Prev</button>
         <button @click="nextPage" class="btn btn-secondary m-2">Next</button>
       </div>
-
     </div>
   </div>
 </template>
@@ -113,62 +102,70 @@ export default {
 }
 </script>
 
-<style>
-@font-face {
-  font-family: 'Disney';
-  src: url('/fonts/waltographUI.ttf') format('truetype');
-}
-
-body {
-  font-family: 'Quicksand', sans-serif;
-  background: linear-gradient(to bottom, #BCEFFF, #01147C);
-  color: white;
-}
-
-/* efek bintang */
-body::before {
-  content: "";
-  position: fixed;
-  width: 100%;
-  height: 100%;
-  background: url("https://www.transparenttextures.com/patterns/stardust.png");
-  opacity: 0.3;
-  z-index: -1;
-}
-
-/* judul */
-h1 {
+<style scoped>
+.page-header h1 {
   font-family: 'Disney', cursive;
-  font-size: 50px;
-  text-align: center;
+  font-size: 3rem;
+  margin-bottom: 0.5rem;
 }
 
-/* card */
-.card {
-  background: hsla(206, 84%, 73%, 0.85);
-  backdrop-filter: blur(10px);
-  border-radius: 15px;
+.page-header p {
+  color: #dceeff;
+  font-size: 1rem;
+}
+
+.search-box {
+  border-radius: 2rem;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.search-box input {
+  background: transparent;
   color: white;
-  height: 100%;
+  border: none;
 }
 
-/* body card biar rata */
-.card-body {
-  min-height: 120px;
+.search-box input::placeholder {
+  color: rgba(255, 255, 255, 0.75);
 }
 
-/* hover */
+.search-box input:focus {
+  box-shadow: none;
+}
+
+.btn-disney {
+  background: linear-gradient(135deg, #ffce00, #e35a88);
+  border: none;
+  color: #111;
+  padding: 0.5rem 1.3rem;
+}
+
 .character-card {
-  transition: 0.4s;
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+  background: rgba(10, 23, 83, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: white;
 }
 
 .character-card:hover {
   transform: translateY(-10px);
-  box-shadow: 0 0 20px #BCEFFF;
+  box-shadow: 0 0 30px rgba(255, 206, 0, 0.35);
 }
 
-button {
-  border-radius: 20px;
+.character-card .card-body {
+  color: #f8f9ff;
+}
+
+.character-card h5 {
+  color: #fff;
+}
+
+.btn-detail {
+  background: rgba(255, 255, 255, 0.95);
+  color: #111;
+  border-radius: 50px;
 }
 
 .btn-secondary {
